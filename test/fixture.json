@@ -1,0 +1,421 @@
+{
+ "lists": [
+  {
+   "id": "bandeja",
+   "name": "Bandeja de entrada 📫",
+   "pos": 1,
+   "closed": false
+  },
+  {
+   "id": "acep",
+   "name": "Aceptado 🤝",
+   "pos": 2,
+   "closed": false
+  },
+  {
+   "id": "doc",
+   "name": "Documentación 📝",
+   "pos": 3,
+   "closed": false
+  },
+  {
+   "id": "dir",
+   "name": "Dirección 👷",
+   "pos": 4,
+   "closed": false
+  },
+  {
+   "id": "ent",
+   "name": "Entregado ✅",
+   "pos": 5,
+   "closed": false
+  },
+  {
+   "id": "rech",
+   "name": "Rechazado ❌",
+   "pos": 6,
+   "closed": false
+  }
+ ],
+ "cards": [
+  {
+   "id": "card4",
+   "name": "💬 Contacto inicial",
+   "desc": "",
+   "idList": "bandeja",
+   "pos": 1,
+   "closed": false,
+   "shortUrl": "https://trello.com/c/demo",
+   "labels": [],
+   "checklists": []
+  },
+  {
+   "id": "card5",
+   "name": "Nave agrícola ❓",
+   "desc": "Carpeta en Drive",
+   "idList": "bandeja",
+   "pos": 2,
+   "closed": false,
+   "shortUrl": "https://trello.com/c/demo",
+   "labels": [],
+   "checklists": []
+  },
+  {
+   "id": "card6",
+   "name": "✅ Por empezar",
+   "desc": "",
+   "idList": "acep",
+   "pos": 3,
+   "closed": false,
+   "shortUrl": "https://trello.com/c/demo",
+   "labels": [],
+   "checklists": []
+  },
+  {
+   "id": "card7",
+   "name": "C/ Olmo 3, Villanorte ❓",
+   "desc": "Carpeta en Drive",
+   "idList": "acep",
+   "pos": 4,
+   "closed": false,
+   "shortUrl": "https://trello.com/c/demo",
+   "labels": [
+    {
+     "id": "lb1",
+     "name": "Vivienda",
+     "color": "blue"
+    }
+   ],
+   "checklists": []
+  },
+  {
+   "id": "card8",
+   "name": "C/ Fresno 8, Puebla Alta ❓",
+   "desc": "Carpeta en Drive",
+   "idList": "acep",
+   "pos": 5,
+   "closed": false,
+   "shortUrl": "https://trello.com/c/demo",
+   "labels": [],
+   "checklists": []
+  },
+  {
+   "id": "card9",
+   "name": "⌛ Esperando pago",
+   "desc": "",
+   "idList": "acep",
+   "pos": 6,
+   "closed": false,
+   "shortUrl": "https://trello.com/c/demo",
+   "labels": [],
+   "checklists": []
+  },
+  {
+   "id": "card10",
+   "name": "📏 Básico",
+   "desc": "",
+   "idList": "doc",
+   "pos": 7,
+   "closed": false,
+   "shortUrl": "https://trello.com/c/demo",
+   "labels": [],
+   "checklists": []
+  },
+  {
+   "id": "card15",
+   "name": "C/ Acacia 12, Ciudad Ejemplo ❓",
+   "desc": "Carpeta en Drive",
+   "idList": "doc",
+   "pos": 8,
+   "closed": false,
+   "shortUrl": "https://trello.com/c/demo",
+   "labels": [
+    {
+     "id": "lb2",
+     "name": "Apartamento turístico",
+     "color": "orange"
+    }
+   ],
+   "checklists": [
+    {
+     "id": "cl12",
+     "name": "Básico",
+     "pos": 12,
+     "checkItems": [
+      {
+       "id": "it11",
+       "name": "Estudio de viabilidad · 9/11/26 → 20/11/26",
+       "state": "incomplete",
+       "pos": 11
+      }
+     ]
+    },
+    {
+     "id": "cl14",
+     "name": "Ejecución",
+     "pos": 14,
+     "checkItems": [
+      {
+       "id": "it13",
+       "name": "Proyecto de reforma",
+       "state": "incomplete",
+       "pos": 13
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "card20",
+   "name": "C/ Río 5, Ciudad Ejemplo ❓",
+   "desc": "Carpeta en Drive",
+   "idList": "doc",
+   "pos": 9,
+   "closed": false,
+   "shortUrl": "https://trello.com/c/demo",
+   "labels": [
+    {
+     "id": "lb2",
+     "name": "Apartamento turístico",
+     "color": "orange"
+    }
+   ],
+   "checklists": [
+    {
+     "id": "cl17",
+     "name": "Básico",
+     "pos": 17,
+     "checkItems": [
+      {
+       "id": "it16",
+       "name": "Estudio de viabilidad · 26/10/26 → 13/11/26",
+       "state": "incomplete",
+       "pos": 16
+      }
+     ]
+    },
+    {
+     "id": "cl19",
+     "name": "Ejecución",
+     "pos": 19,
+     "checkItems": [
+      {
+       "id": "it18",
+       "name": "Proyecto de reforma",
+       "state": "incomplete",
+       "pos": 18
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "card23",
+   "name": "Urb. Los Pinos 21, Costa Sur ❓",
+   "desc": "Carpeta en Drive",
+   "idList": "doc",
+   "pos": 10,
+   "closed": false,
+   "shortUrl": "https://trello.com/c/demo",
+   "labels": [
+    {
+     "id": "lb2",
+     "name": "Apartamento turístico",
+     "color": "orange"
+    }
+   ],
+   "checklists": [
+    {
+     "id": "cl22",
+     "name": "Básico",
+     "pos": 22,
+     "checkItems": [
+      {
+       "id": "it21",
+       "name": "Documentación VUT · 26/10/26 → 20/11/26",
+       "state": "incomplete",
+       "pos": 21
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "card28",
+   "name": "Pza. Mayor 2, Ciudad Ejemplo ❓",
+   "desc": "Carpeta en Drive",
+   "idList": "doc",
+   "pos": 11,
+   "closed": false,
+   "shortUrl": "https://trello.com/c/demo",
+   "labels": [],
+   "checklists": [
+    {
+     "id": "cl27",
+     "name": "Básico",
+     "pos": 27,
+     "checkItems": [
+      {
+       "id": "it24",
+       "name": "Estudio de viabilidad · 28/9/26 → 9/10/26",
+       "state": "complete",
+       "pos": 24
+      },
+      {
+       "id": "it25",
+       "name": "Nota técnica · 5/10/26 → 16/10/26",
+       "state": "complete",
+       "pos": 25
+      },
+      {
+       "id": "it26",
+       "name": "Siguiente fase",
+       "state": "incomplete",
+       "pos": 26
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "card32",
+   "name": "C/ Molino 9, Ciudad Ejemplo ❓",
+   "desc": "Carpeta en Drive",
+   "idList": "doc",
+   "pos": 12,
+   "closed": false,
+   "shortUrl": "https://trello.com/c/demo",
+   "labels": [],
+   "checklists": [
+    {
+     "id": "cl31",
+     "name": "Básico",
+     "pos": 31,
+     "checkItems": [
+      {
+       "id": "it29",
+       "name": "Estudio de viabilidad · 17/8/26 → 23/10/26",
+       "state": "complete",
+       "pos": 29
+      },
+      {
+       "id": "it30",
+       "name": "Siguiente fase",
+       "state": "incomplete",
+       "pos": 30
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "card33",
+   "name": "📐 Ejecución",
+   "desc": "",
+   "idList": "doc",
+   "pos": 13,
+   "closed": false,
+   "shortUrl": "https://trello.com/c/demo",
+   "labels": [],
+   "checklists": []
+  },
+  {
+   "id": "card39",
+   "name": "C/ Castaño 14, Villanorte ❓",
+   "desc": "Carpeta en Drive",
+   "idList": "doc",
+   "pos": 14,
+   "closed": false,
+   "shortUrl": "https://trello.com/c/demo",
+   "labels": [
+    {
+     "id": "lb1",
+     "name": "Vivienda",
+     "color": "blue"
+    }
+   ],
+   "checklists": [
+    {
+     "id": "cl36",
+     "name": "Ejecución",
+     "pos": 36,
+     "checkItems": [
+      {
+       "id": "it34",
+       "name": "Proyecto de agregación · 12/10/26 → 23/10/26",
+       "state": "complete",
+       "pos": 34
+      },
+      {
+       "id": "it35",
+       "name": "PByE reforma y ampliación · 19/10/26 → 18/12/26",
+       "state": "incomplete",
+       "pos": 35
+      }
+     ]
+    },
+    {
+     "id": "cl38",
+     "name": "Dirección de obra",
+     "pos": 38,
+     "checkItems": [
+      {
+       "id": "it37",
+       "name": "Dirección de obra",
+       "state": "incomplete",
+       "pos": 37
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "card43",
+   "name": "Camino Viejo 6, Valle Bajo ❓",
+   "desc": "Carpeta en Drive",
+   "idList": "doc",
+   "pos": 15,
+   "closed": false,
+   "shortUrl": "https://trello.com/c/demo",
+   "labels": [
+    {
+     "id": "lb3",
+     "name": "Trámite / informe",
+     "color": "sky"
+    }
+   ],
+   "checklists": [
+    {
+     "id": "cl42",
+     "name": "Ejecución",
+     "pos": 42,
+     "checkItems": [
+      {
+       "id": "it40",
+       "name": "Informe sectorial · 26/10/26 → 30/10/26",
+       "state": "complete",
+       "pos": 40
+      },
+      {
+       "id": "it41",
+       "name": "Contestar requerimiento · 9/11/26 → 20/11/26",
+       "state": "incomplete",
+       "pos": 41
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "card44",
+   "name": "C/ Jara 7, Ciudad Ejemplo ❓",
+   "desc": "Carpeta en Drive",
+   "idList": "ent",
+   "pos": 16,
+   "closed": false,
+   "shortUrl": "https://trello.com/c/demo",
+   "labels": [],
+   "checklists": []
+  }
+ ]
+}

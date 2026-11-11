@@ -1,5 +1,5 @@
 // Cliente mínimo de la API REST de Trello con el token del usuario.
-import { APP_KEY } from './config.js';
+import { APP_KEY } from './config.js?v=3';
 
 const BASE = 'https://api.trello.com/1';
 

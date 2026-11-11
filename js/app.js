@@ -1,9 +1,9 @@
 import { h, render } from '../vendor/preact.mjs';
 import { useState, useEffect, useRef, useMemo, useCallback } from '../vendor/hooks.mjs';
 import htm from '../vendor/htm.mjs';
-import { APP_KEY, APP_NAME, APP_AUTHOR, HIDDEN_LISTS } from './config.js';
-import { createApi } from './api.js';
-import { buildModel, computeRange, formatItemName, phaseById, PHASES, WEEK, DAY } from './model.js';
+import { APP_KEY, APP_NAME, APP_AUTHOR, HIDDEN_LISTS } from './config.js?v=3';
+import { createApi } from './api.js?v=3';
+import { buildModel, computeRange, formatItemName, phaseById, PHASES, WEEK, DAY } from './model.js?v=3';
 
 const html = htm.bind(h);
 
@@ -31,6 +31,15 @@ async function boot() {
   if (params.has('demo')) {
     const board = await fetch('./test/fixture.json').then((r) => r.json());
     render(html`<${App} source=${demoSource(board)} />`, root);
+    return;
+  }
+  // Vuelta de una autorización antigua a esta misma página: entregar el token y cerrar.
+  if (!framed && /(^|&)token=/.test(location.hash.slice(1))) {
+    const tok = new URLSearchParams(location.hash.slice(1)).get('token');
+    history.replaceState(null, '', location.pathname);
+    try { window.opener && window.opener.postMessage({ type: 'acorde-token', token: tok }, location.origin); } catch (e) {}
+    render(html`<div class="center"><h1>Listo</h1><p>Acceso autorizado. Cierra esta ventana.</p></div>`, root);
+    setTimeout(() => window.close(), 800);
     return;
   }
   if (!framed || !window.TrelloPowerUp) {

@@ -32,9 +32,9 @@ Abrir `http://localhost:8765/timeline.html?demo` → modo demo con datos de ejem
 
 ## Alta en Trello (una vez por Workspace)
 
-1. Publicar esta carpeta en HTTPS (GitHub Pages o Cloudflare Pages). Ejemplo: `https://<usuario>.github.io/acorde-powerup/`.
+1. Publicado en GitHub Pages: `https://sloy.github.io/acorde-trello/` (Settings → Pages → rama `main`, carpeta raíz).
 2. En https://trello.com/power-ups/admin → **Nuevo**: elegir el Workspace (hay que ser administrador),
-   nombre «Acorde · Cronograma», URL del conector = la URL de `index.html`.
+   nombre «Acorde · Cronograma», URL del conector = `https://sloy.github.io/acorde-trello/index.html`.
 3. En el Power-Up creado → **API key** → generar. Copiarla en `APP_KEY` de `js/config.js` y volver a publicar.
    En «Allowed origins» añadir el dominio del alojamiento.
 4. En **Capabilities** activar solo `board-buttons`.

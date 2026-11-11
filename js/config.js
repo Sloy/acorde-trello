@@ -1,6 +1,6 @@
 // Rellenar tras dar de alta el Power-Up en https://trello.com/power-ups/admin (pestaña «API key»).
 // La API key de un Power-Up es pública por diseño: no es un secreto.
-export const APP_KEY = 'PEGAR_AQUI_LA_API_KEY';
+export const APP_KEY = '517c7ea7a9e390b6c3efbded490e0b86';
 export const APP_NAME = 'Acorde · Cronograma';
 export const APP_AUTHOR = 'estudio acorde';
 

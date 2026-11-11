@@ -26,19 +26,22 @@ const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 async function boot() {
   const root = document.getElementById('app');
   const params = new URLSearchParams(location.search);
-  const inTrello = !!window.TrelloPowerUp && window.parent !== window && !params.has('demo');
+  const framed = window.parent !== window;
 
-  if (!inTrello) {
+  if (params.has('demo')) {
     const board = await fetch('./test/fixture.json').then((r) => r.json());
     render(html`<${App} source=${demoSource(board)} />`, root);
+    return;
+  }
+  if (!framed || !window.TrelloPowerUp) {
+    render(html`<div class="center"><h1>Ábrelo desde Trello</h1><p>El cronograma se abre con el botón «Cronograma» del tablero. Para ver la demo con datos de ejemplo, añade <code>?demo</code> a la URL.</p></div>`, root);
     return;
   }
 
   const t = window.TrelloPowerUp.iframe({ appKey: APP_KEY, appName: APP_NAME, appAuthor: APP_AUTHOR });
   const boardId = t.getContext().board;
-  const rest = t.getRestApi();
-  let token = await rest.getToken().catch(() => null);
-  if (!token) token = await t.get('member', 'private', 'token').catch(() => null);
+  let token = await t.get('member', 'private', 'token').catch(() => null);
+  if (token && !(await tokenWorks(token))) token = null;
 
   const start = (tok) => {
     const api = createApi(tok);
@@ -52,10 +55,42 @@ async function boot() {
 
   if (token) return start(token);
   render(html`<${AuthScreen} onAuthorize=${async () => {
-    const tok = await rest.authorize({ scope: 'read,write', expiration: 'never' });
+    const tok = await authorizePopup();
     await t.set('member', 'private', 'token', tok).catch(() => {});
     start(tok);
   }} />`, root);
+}
+
+async function tokenWorks(token) {
+  try {
+    const r = await fetch('https://api.trello.com/1/members/me?fields=id&key=' + APP_KEY + '&token=' + encodeURIComponent(token));
+    return r.ok;
+  } catch (e) { return true; } // sin red: no lo descartamos
+}
+
+// Autorización propia: abre la pantalla de Trello y recibe el token desde auth.html (misma web).
+function authorizePopup() {
+  const returnUrl = new URL('./auth.html', location.href).href;
+  const url = 'https://trello.com/1/authorize?' + new URLSearchParams({
+    expiration: 'never', name: APP_NAME, scope: 'read,write', response_type: 'token',
+    key: APP_KEY, callback_method: 'fragment', return_url: returnUrl
+  });
+  return new Promise((resolve, reject) => {
+    const popup = window.open(url, 'acorde-auth', 'width=580,height=720');
+    if (!popup) return reject(new Error('el navegador ha bloqueado la ventana emergente'));
+    let done = false;
+    const finish = (fn, v) => { if (done) return; done = true; window.removeEventListener('message', onMsg); clearInterval(timer); fn(v); };
+    const onMsg = (ev) => {
+      if (ev.origin !== location.origin || !ev.data || ev.data.type !== 'acorde-token') return;
+      if (ev.data.token) finish(resolve, ev.data.token); else finish(reject, new Error('acceso denegado'));
+    };
+    window.addEventListener('message', onMsg);
+    const timer = setInterval(() => {
+      let closed = false;
+      try { closed = popup.closed; } catch (e) { /* sin acceso */ }
+      if (closed) setTimeout(() => finish(reject, new Error('se cerró la ventana sin completar la autorización')), 500);
+    }, 500);
+  });
 }
 
 // Modo demo (fuera de Trello): mismos datos, escrituras en memoria.

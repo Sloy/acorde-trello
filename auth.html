@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Autorización · Acorde Cronograma</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #1d2125; color: #dee4ea; font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 420px; margin: 20vh auto; padding: 0 20px; text-align: center; }
+  .error { color: #fd9891; }
+</style>
+</head>
+<body>
+<main><h1 id="title">Autorizando…</h1><p id="msg"></p></main>
+<script>
+  // Página de vuelta de https://trello.com/1/authorize: entrega el token al cronograma que abrió esta ventana.
+  (function () {
+    var hash = new URLSearchParams(location.hash.slice(1));
+    var token = hash.get('token');
+    var error = hash.get('error');
+    var title = document.getElementById('title'), msg = document.getElementById('msg');
+    var delivered = false;
+    try {
+      if (window.opener) { window.opener.postMessage({ type: 'acorde-token', token: token || null }, location.origin); delivered = true; }
+    } catch (e) { /* opener inaccesible */ }
+    history.replaceState(null, '', location.pathname); // quita el token de la barra de direcciones
+    if (!token) {
+      title.textContent = 'No se ha autorizado';
+      msg.className = 'error';
+      msg.textContent = error ? 'Trello respondió: ' + error : 'No se recibió ningún token.';
+    } else if (delivered) {
+      title.textContent = 'Listo';
+      msg.textContent = 'Acceso autorizado. Esta ventana se cerrará sola.';
+      setTimeout(function () { window.close(); }, 800);
+    } else {
+      title.textContent = 'Autorizado, pero…';
+      msg.className = 'error';
+      msg.textContent = 'No se pudo avisar al cronograma (la ventana original ya no está accesible). Cierra esta ventana y vuelve a abrir el cronograma.';
+    }
+  })();
+</script>
+</body>
+</html>

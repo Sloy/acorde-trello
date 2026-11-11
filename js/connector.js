@@ -10,7 +10,7 @@ window.TrelloPowerUp.initialize({
     text: 'Cronograma',
     condition: 'always',
     callback: (t) => t.modal({
-      url: new URL('../timeline.html?v=3', import.meta.url).href,
+      url: new URL('../timeline.html?v=4', import.meta.url).href,
       fullscreen: true,
       title: 'Cronograma'
     })

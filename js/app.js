@@ -24,6 +24,9 @@ const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
 // ---------------------------------------------------------------- arranque
 async function boot() {
+  if (!document.documentElement.getAttribute('data-color-mode')) {
+    document.documentElement.setAttribute('data-color-mode', matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  }
   const root = document.getElementById('app');
   const params = new URLSearchParams(location.search);
   const framed = window.parent !== window;
@@ -458,15 +461,15 @@ function App({ source }) {
     const s = isQ ? qIdx : toIdx(it.start), e = isQ ? qIdx : toIdx(it.end);
     const isSel = !!sel && sel.pid === p.id && sel.iid === it.id;
     let bg = ph.color, fg = '#fff', border = 'none';
-    if (isQ) { bg = 'transparent'; fg = '#dee4ea'; border = '1px dashed #9fadbc'; }
-    else if (it.done) { bg = '#38414a'; fg = '#9fadbc'; }
+    if (isQ) { bg = 'transparent'; fg = 'var(--text)'; border = '1px dashed var(--q-border)'; }
+    else if (it.done) { bg = 'var(--done-bg)'; fg = 'var(--done-fg)'; }
     else if (s > todayW) bg = stripes(ph.color);
     const left = s * colW + 2, width = Math.max(8, (e - s + 1) * colW - 4);
     const dates = isQ ? 'Sin fecha' : fmtY(it.start) + ' → ' + fmtY(it.end + 4 * DAY);
     return html`
       <button key=${it.id} class="bar" aria-label=${p.name + ' — ' + it.name + ' (' + ph.name + '). ' + dates}
         onPointerDown=${(ev) => startDrag(ev, p, it, 'move', qIdx)} onDblClick=${() => openPanel(p.id, it.id)} onKeyDown=${(ev) => keyMove(ev, p, it, qIdx)}
-        style=${`top:${top}px; left:${left}px; width:${width}px; background:${bg}; color:${fg}; border:${border}; line-height:${isQ ? BAR_H - 2 : BAR_H}px; box-shadow:${isSel ? '0 0 0 2px #fff' : 'none'}; text-decoration:${it.done ? 'line-through' : 'none'}; transition:${trBar}`}>
+        style=${`top:${top}px; left:${left}px; width:${width}px; background:${bg}; color:${fg}; border:${border}; line-height:${isQ ? BAR_H - 2 : BAR_H}px; box-shadow:${isSel ? '0 0 0 2px var(--sel-ring)' : 'none'}; text-decoration:${it.done ? 'line-through' : 'none'}; transition:${trBar}`}>
         ${!isQ && html`<span class="handle l" onPointerDown=${(ev) => startDrag(ev, p, it, 'l', qIdx)}></span><span class="handle r" onPointerDown=${(ev) => startDrag(ev, p, it, 'r', qIdx)}></span>`}
         ${(isQ ? '? ' : '') + it.name}
       </button>
@@ -513,10 +516,10 @@ function App({ source }) {
         const thi = trackHandlers(keyI, p);
         const isSel = !!sel && sel.pid === p.id && sel.iid === it.id;
         return html`<div class="row item" key=${it.id} style=${`height:${isOpen ? ITEM_H : 0}px; border-top-width:${isOpen ? 1 : 0}px; visibility:${isOpen ? 'visible' : 'hidden'}; transition:height 220ms ${EASE}${isOpen ? '' : ', visibility 0s linear 220ms'}`}>
-          <button class="label itemlabel" style=${`background:${isSel ? '#2c333a' : '#161a1d'}`} onClick=${() => openPanel(p.id, it.id)}>
+          <button class="label itemlabel" style=${`background:${isSel ? 'var(--item-sel)' : 'var(--item-bg)'}`} onClick=${() => openPanel(p.id, it.id)}>
             ${it.done ? CheckOn() : CheckOff()}
-            <span class="dot" style=${`background:${it.done ? '#38414a' : phaseById(it.ph).color}`}></span>
-            <span class="iname" style=${`color:${it.done ? '#8c9bab' : '#dee4ea'}`}>${it.name}</span>
+            <span class="dot" style=${`background:${it.done ? 'var(--done-bg)' : phaseById(it.ph).color}`}></span>
+            <span class="iname" style=${`color:${it.done ? 'var(--muted)' : 'var(--text)'}`}>${it.name}</span>
             <span class="idate">${it.start == null ? '?' : fmt(it.start) + ' – ' + fmt(it.end + 4 * DAY)}</span>
           </button>
           <div class="track" ...${thi}>${ghost(keyI, p, 7)}</div>
@@ -577,8 +580,10 @@ function App({ source }) {
 
   return html`<div class="app">
     <div class="toolbar">
-      <h1>Cronograma</h1>
       ${source.demo && html`<span class="badge">Demo · cambios en memoria</span>`}
+      <div class="filters" role="group" aria-label="Filtrar por tipo">
+        ${types.map((k) => { const on = !hidden[k]; return html`<button class=${'chip' + (on ? ' on' : '')} aria-pressed=${on} onClick=${() => setHidden({ ...hidden, [k]: !hidden[k] })}>${on && Check()}${k || 'Sin tipo'}</button>`; })}
+      </div>
       <span class="grow"></span>
       <button class=${addMode ? 'primary' : 'secondary'} aria-pressed=${addMode} onClick=${() => { setAddMode(!addMode); setHover(null); }}>${Plus(14)} ${addMode ? 'Elige semana… (cancelar)' : 'Añadir tarea'}</button>
       <button class="ghostbtn" onClick=${() => { const o = {}; if (!anyOpen) visProjects.forEach((p) => { o[p.id] = true; }); setOpen(o); }}>${anyOpen ? 'Contraer todo' : 'Expandir todo'}</button>
@@ -589,12 +594,6 @@ function App({ source }) {
         <button class="icon" aria-label="Ampliar" onClick=${() => zoomTo(zoom * 1.25)}>${Plus(14)}</button>
       </div>
       ${source.close && html`<button class="icon" aria-label="Cerrar cronograma" onClick=${source.close}>${Close()}</button>`}
-    </div>
-    <div class="filters">
-      <span class="muted">Tipo</span>
-      ${types.map((k) => { const on = !hidden[k]; return html`<button class=${'chip' + (on ? ' on' : '')} aria-pressed=${on} onClick=${() => setHidden({ ...hidden, [k]: !hidden[k] })}>${on && Check()}${k || 'Sin tipo'}</button>`; })}
-      <span class="grow"></span>
-      <span class="muted">Arrastra el fondo para moverte · pellizca para zoom · doble clic o ⋯ para editar</span>
     </div>
     ${model.warnings.length > 0 && html`<div class="warn">${model.warnings.length} tarea(s) con fecha en formato no reconocido: ${model.warnings.slice(0, 3).map((w) => '«' + w.item + '»').join(', ')}${model.warnings.length > 3 ? '…' : ''}</div>`}
     <div class="scroller" ref=${scroller}>
@@ -623,8 +622,8 @@ function App({ source }) {
       ${PHASES.map((p) => html`<span><i style=${`background:${p.color}`}></i>${p.name}</span>`)}
       <span class="sep"></span>
       <span><i style="background:repeating-linear-gradient(135deg,#738496 0 6px,#73849680 6px 12px)"></i>Prevista</span>
-      <span><i style="background:#38414a"></i>Hecha</span>
-      <span><i style="border:1px dashed #9fadbc"></i>Sin fecha</span>
+      <span><i style="background:var(--done-bg)"></i>Hecha</span>
+      <span><i style="border:1px dashed var(--q-border)"></i>Sin fecha</span>
       <span><i class="todaymark"></i>Hoy</span>
     </div>
     ${panel}
@@ -639,8 +638,8 @@ const Minus = () => svg(14, html`<line x1="5" y1="12" x2="19" y2="12"/>`);
 const Close = () => svg(16, html`<line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/>`);
 const Check = () => svg(11, html`<polyline points="5 12 10 17 19 7"/>`, { 'stroke-width': 3 });
 const Dots = () => html`<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>`;
-const CheckOn = () => html`<svg role="img" aria-label="Hecha" width="14" height="14" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="4" fill="#4bce97"/><polyline points="7 12 10.5 15.5 17 9" fill="none" stroke="#1d2125" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-const CheckOff = () => html`<svg role="img" aria-label="Pendiente" width="14" height="14" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4" fill="none" stroke="#738496" stroke-width="2.5"/></svg>`;
+const CheckOn = () => html`<svg role="img" aria-label="Hecha" width="14" height="14" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="4" fill="var(--check-on)"/><polyline points="7 12 10.5 15.5 17 9" fill="none" stroke="var(--bg)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const CheckOff = () => html`<svg role="img" aria-label="Pendiente" width="14" height="14" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4" fill="none" stroke="var(--check-off)" stroke-width="2.5"/></svg>`;
 
 boot().catch((e) => {
   document.getElementById('app').innerHTML = '<div class="center"><h1>Error al iniciar</h1><p class="error"></p></div>';
